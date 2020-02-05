@@ -1,8 +1,4 @@
-// document.addEventListener("DOMContentLoaded", function(){
-//     console.log("it's alive");
-// });
-
-document.addEventListener("click", function() {
+let startButton = document.getElementById("startButton").addEventListener("click", function() {
     document.getElementById("introContainer").style.display = "none";
 })
 
@@ -13,91 +9,150 @@ game.setAttribute("width", getComputedStyle(game)["width"]);
 game.setAttribute("height", getComputedStyle(game)["height"]);
 
 
-function Crawler(x, y, color, width, height) {
+function Thing(x, y, color, width, height) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.width = width;
     this.height = height;
     this.alive = true;
+    this.hit = true;
     this.render = function() {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
+// console.log(game.width)
+// console.log(game.height)
 
-let player = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "pink", 20, 20);
+let player = new Thing(50, 450, "white", 30, 30);
 
-let creep0 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep1 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep2 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep3 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep4 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep5 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep6 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep7 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep8 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
-let creep9 = new Crawler(Math.floor(Math.random()*game.width), Math.floor(Math.random()*game.height), "black", 20, 60);
+// Creating Creeps
+let creeps = [
+    creep1 = new Thing(380, 70, "red", 30, 30),
+    creep2 = new Thing(150, 350, "blue", 30, 30),
+    creep3 = new Thing(250, 150, "green", 30, 30),
+    creep4 = new Thing(360, 400, "gray", 30, 30),
+    creep5 = new Thing(650, 150, "hotpink", 30, 30),
+    creep6 = new Thing(700, 430, "orange", 30, 30),
+    creep7 = new Thing(490, 300, "yellow", 30, 30)
+    // creep5 = new Thing(500, 0, "red", 30, 30),
+    // creep5 = new Thing(500, 0, "red", 30, 30),
+    // creep5 = new Thing(500, 0, "red", 30, 30),
+    // creep5 = new Thing(500, 0, "red", 30, 30),
+] 
+// let creeps = [];
+// for(let i = 0; i < 10; i++){
+    
+//     creeps[i] = new Thing(Math.floor(Math.random()*(game.width-20)), Math.floor(Math.random()*(game.height-20)), "red", 30, 30);
+    // TODO: write creep dance function which makes them move circularly
+// }
+//creating an array of wall
+let walls = [
+    wall1 = new Thing(0, 200, "black", 180, 50),
+    wall2 = new Thing(640, 350, "black", 50, 180),
+    wall3 = new Thing(700, 250, "black", 180, 50),
+    wall4 = new Thing(300, 200, "black",50, 300),
+    wall5 = new Thing(500, 0, "black", 50, 250)
+] 
 
-let dancingCreep = function() {
-    setInterval(function() {
 
-    })
+let finishLine = new Thing(700, 0, "green", 200, 100);
+
+
+let moveCount = 0;
+//if count is even move right or else move left if count is odd
+function dancingCreeps() {
+    if(moveCount % 10 === 0){
+        creeps.forEach(function(creep) {
+            creep.x +=5;
+        })
+    } else if (moveCount % 10 === 5 ) {
+        creeps.forEach(function(creep) {
+            creep.x -=5;
+        })
+    }
 }
 
 function movementHandler(e) {
-    
     switch (e.keyCode) {
         case (87):
-            player.y -=10;
+            //if player.y is negative then dont move up
+            // if (!checkWallCollision(87)) { move up }
+            if (!(player.y <= 0) && checkWallCollision())  {
+                player.y -=10;
+            }
             break;
         case (65):
-            player.x -=10;
+            if (!(player.x <= 0) && checkWallCollision()) {
+                player.x -=10;
+            }
             break;
         case (83):
-            player.y +=10;
+            if (!(player.y >= 475) && checkWallCollision()) {
+                player.y +=10;
+            }
             break;
         case (68):
-            player.x +=10;
-    
+            if (!(player.x >= 970) && checkWallCollision()) {
+                player.x +=10;   
+            }
     }
 }
+
 document.addEventListener("keydown", movementHandler);
-
-function detectHit() {
-    
-    if (player.x < creep.x + creep.width &&
-        player.x + player.width > creep.x &&
-        player.y < creep.y + creep.height &&
-        player.y + player.height > creep.y) {
-            creep.alive = false;
-            //run end game function
-           
-        }
-
-
+//Detect when play runs into creeps
+function detectCreepHit() {
+    creeps.forEach(function(creep) {
+        if (player.x < creep.x + creep.width &&
+            player.x + player.width > creep.x &&
+            player.y < creep.y + creep.height &&
+            player.y + player.height > creep.y) {
+                player.alive = false;
+            }
+                //run end game function
+         })  
+}  
+// Detect when player runs into walls
+function checkWallCollision() {
+    // switch statement checking direction
+    var isItTrue = true
+    walls.forEach(function (wall) {
+        if (player.x < wall.x + wall.width &&
+            player.x + player.width > wall.x &&
+            player.y < wall.y + wall.height &&
+            player.y + player.height > wall.y) {
+                isItTrue = false;
+             } 
+        })
+    return isItTrue
 }
+
 function gameLoop() {
-    // console.log("get smashin");
-    //clear the canvas
+    
     ctx.clearRect(0, 0, game.width, game.height);
-    //display x,y coodinated of the hero in movementDisplay
-    // movementDisplay.textContent = `X: ${hero.x} Y: ${hero.y}`;
-    //render the hero
-    player.render();
-    //check if ogre is alive
-    if (creep0.alive && creep1.alive && creep2.alive &&creep3.alive && creep4.alive && creep5.alive &&creep6.alive && creep7.alive && creep8.alive && creep9.alive) {
-        }
-        //render the ogre
-        creep.render();
-        //check for collision
-        detectHit();
-    }
-
+  if(player.alive) {
+      player.render();
+  }
+   
+    creeps.forEach(function(creep){
+        if(creep.alive){
+            dancingCreeps();
+            creep.render();
+        } 
+        detectCreepHit();
+    })
+    walls.forEach(function(wall){
+        wall.render();
+    })
+    // wall1.render();
+    // wall2.render();
+    // wall3.render();
+    // wall4.render();
+    // wall5.render();
+    checkWallCollision();
+    finishLine.render();
+    moveCount++;
 }
-let runGame = setInterval(gameLoop, 60);
-// let gameInit = function()
-// //play music
-//start countdown
-//creeps start dancing
-//set message board 
+let runGame = setInterval(gameLoop, 100);
+
