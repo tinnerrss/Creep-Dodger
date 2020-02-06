@@ -1,13 +1,15 @@
 body {
-    background: url("https://images.unsplash.com/photo-1532452119098-a3650b3c46d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80") ;
+    background-image: url("https://media.tenor.com/images/466dd6bb1f59cf5dfb7c340ead2de80a/tenor.gif") ;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-position: right;
+    background-color: #fbfdfa;
+    /* background-size: ; */
 }
 #gameBoard {
     max-width: 50em;
     height: 70%;
     border: none;
-    margin: auto;
+    margin: 0px 0px 0px 50px;
     position: relative;
     display: flex;
     align-items: center;
@@ -18,7 +20,7 @@ canvas {
     background-color: rgb(51, 46, 46);
     height: 500px;
     /* width: 100%; */
-    border: 1px solid black;
+    border: 10px double white;
     border-radius: 25px;
     margin: 15px;
     padding: 0;
@@ -28,7 +30,7 @@ canvas {
 #timerBox {
     height: 60px;
     width: 600px;
-    margin: auto;
+    /* margin: auto; */
     border-radius: 15px;
     text-align: center;
     font-weight: bold;
@@ -36,9 +38,9 @@ canvas {
     background: white;
     color: green;
 }
-#countdown {
+#title {
     padding: 0;
-    margin: 0;
+    margin: 30px 100px;
 }
 /* #bottomContainer {
     height: 200px;
@@ -46,14 +48,15 @@ canvas {
     border: 1px solid black;
     margin: auto;
 } */
-#introContainer {
+#popUpContainer {
     text-align: center;
     position: absolute;
     /* z-index: 2; */
     height: 60%;
     width: 70%;
     border-radius: 25px;
-    margin: auto;
+    border: 10px double black;
+    /* margin: auto; */
     background: white;
     color: black;
 
