@@ -2,7 +2,7 @@ body {
     background-image: url("https://media.tenor.com/images/466dd6bb1f59cf5dfb7c340ead2de80a/tenor.gif") ;
     background-repeat: no-repeat;
     background-position: right;
-    background-color: #fbfdfa;
+    background-color: fbfdfa;
     /* background-size: ; */
 }
 #gameBoard {
@@ -30,7 +30,7 @@ canvas {
 #timerBox {
     height: 60px;
     width: 600px;
-    /* margin: auto; */
+    margin: auto;
     border-radius: 15px;
     text-align: center;
     font-weight: bold;
@@ -40,7 +40,7 @@ canvas {
 }
 #title {
     padding: 0;
-    margin: 30px 100px;
+    margin: 30px auto 0px auto;
 }
 /* #bottomContainer {
     height: 200px;
